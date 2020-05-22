@@ -1,0 +1,13 @@
+environment:
+  host: '[::]'
+  port: 50051
+server_variables:
+  work_dir: /Users/duartealves/Projects/IST/ai4eu/fashion_prediction
+  model_dir: model
+  logs_dir: logs
+  ohe_categories: categories_encoder_params.pkl
+  ohe_attributes: attributes_encoder_params.pkl
+  weights: weights.h5
+  profile_file: profile.pstats
+  log_level: INFO
+  profile: False
