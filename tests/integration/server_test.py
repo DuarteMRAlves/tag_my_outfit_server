@@ -168,7 +168,7 @@ def test_file(name, expected):
 
 
 if __name__ == '__main__':
-    channel = grpc.insecure_channel("192.168.1.13:50051")
+    channel = grpc.insecure_channel("localhost:50051")
     stub = PredictionServiceStub(channel)
     expected_results = loadExpectedResults()
     for file_name in os.listdir(DATA_DIR):

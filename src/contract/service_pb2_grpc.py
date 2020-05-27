@@ -19,6 +19,11 @@ class PredictionServiceStub(object):
         request_serializer=contract_dot_service__pb2.PredictRequest.SerializeToString,
         response_deserializer=contract_dot_service__pb2.PredictResponse.FromString,
         )
+    self.stream_predict = channel.stream_unary(
+        '/PredictionService/stream_predict',
+        request_serializer=contract_dot_service__pb2.PredictRequest.SerializeToString,
+        response_deserializer=contract_dot_service__pb2.StreamPredictResponse.FromString,
+        )
 
 
 class PredictionServiceServicer(object):
@@ -32,6 +37,13 @@ class PredictionServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def stream_predict(self, request_iterator, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_PredictionServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -39,6 +51,11 @@ def add_PredictionServiceServicer_to_server(servicer, server):
           servicer.predict,
           request_deserializer=contract_dot_service__pb2.PredictRequest.FromString,
           response_serializer=contract_dot_service__pb2.PredictResponse.SerializeToString,
+      ),
+      'stream_predict': grpc.stream_unary_rpc_method_handler(
+          servicer.stream_predict,
+          request_deserializer=contract_dot_service__pb2.PredictRequest.FromString,
+          response_serializer=contract_dot_service__pb2.StreamPredictResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

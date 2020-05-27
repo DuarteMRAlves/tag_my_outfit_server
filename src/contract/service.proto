@@ -2,6 +2,7 @@ syntax = "proto3";
 
 service PredictionService {
     rpc predict (PredictRequest) returns (PredictResponse) {}
+    rpc stream_predict (stream PredictRequest) returns (StreamPredictResponse) {}
 }
 
 /* Predict request
@@ -24,6 +25,15 @@ message PredictRequest {
 message PredictResponse {
     repeated Correspondence predicted_categories = 2;
     repeated Correspondence predicted_attributes = 3;
+}
+
+message StreamPredictResponse {
+    repeated Prediction predictions = 1;
+}
+
+message Prediction {
+    repeated Correspondence predicted_categories = 1;
+    repeated Correspondence predicted_attributes = 2;
 }
 
 /* Correspondence between a label and its value */

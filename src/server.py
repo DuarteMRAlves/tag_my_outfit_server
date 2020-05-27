@@ -1,5 +1,5 @@
 from concurrent import futures
-from model.impl import PredictionServerImpl
+from server.impl import PredictionServerImpl
 from contract.service_pb2_grpc import add_PredictionServiceServicer_to_server
 from server.service import Service
 from model.preprocess import PreprocessHandler
