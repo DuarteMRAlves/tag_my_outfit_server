@@ -1,4 +1,4 @@
-from contract.service_pb2 import PredictRequest, StreamPredictResponse, Prediction
+from contract.service_pb2 import PredictRequest, StreamPredictResponse
 from tests.integration.base_integration_test import BaseIT
 
 
