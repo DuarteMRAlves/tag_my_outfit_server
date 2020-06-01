@@ -96,4 +96,3 @@ class ClientStreamingIT(BaseIT):
                 self._check_all_attributes(name, prediction)
             else:
                 self._check_selected_attributes(name, prediction)
-        pass

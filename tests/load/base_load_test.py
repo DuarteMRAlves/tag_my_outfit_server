@@ -43,11 +43,13 @@ class BaseLoadTest(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__image_bytes = []
-        self.__file_names = []
+
+    def setUp(self) -> None:
+        self._image_bytes = []
+        self._file_names = []
         self.__expected = []
-        self.__process_count = 0
-        self.__num_dup = 50
+        self._process_count = 0
+        self._num_dup = 20
 
         self.__loadData()
         self.__loadExpectedResults()
@@ -55,9 +57,9 @@ class BaseLoadTest(unittest.TestCase):
     def __loadData(self):
         for file_name in os.listdir(DATA_DIR):
             with open(DATA_DIR + '/' + file_name, 'rb') as fp:
-                self.__image_bytes.append(fp.read())
-            self.__file_names.append(file_name)
-            self.__process_count += 1
+                self._image_bytes.append(fp.read())
+            self._file_names.append(file_name)
+            self._process_count += 1
 
     def __loadExpectedResults(self):
         for file in FILES:
@@ -66,19 +68,17 @@ class BaseLoadTest(unittest.TestCase):
 
     def _baseRun(self, target_fn):
         """
-        executes a load test with one process for each image sending same request multiple times
-        Args:
-            target_fn: function that every process should execute
-                       messages_to_send x image_name -> ... (result ignored)
-        Returns: void
+        executes a load test with one process for each image sending same request multiple time
+        target_fn: function that every process should execute
+                   messages_to_send x image_name -> ... (result ignored)
         """
         processes = []
-        for i in range(self.__process_count):
+        for i in range(self._process_count):
             process_messages = [
-                PredictRequest(image_data=self.__image_bytes[i], all_categories=True, all_attributes=True)
-                for _ in range(self.__num_dup)
+                PredictRequest(image_data=self._image_bytes[i], all_categories=True, all_attributes=True)
+                for _ in range(self._num_dup)
             ]
-            process = mp.Process(target=target_fn, args=(process_messages, self.__file_names[i]))
+            process = mp.Process(target=target_fn, args=(process_messages, self._file_names[i]))
             processes.append(process)
 
         start = time.time()
@@ -91,7 +91,7 @@ class BaseLoadTest(unittest.TestCase):
             p.join()
         stop = time.time()
 
-        num_messages = self.__num_dup * self.__process_count
+        num_messages = self._num_dup * self._process_count
         elapsed_time = stop - start
         print(f'''TOTAL: {num_messages} messages in {elapsed_time} seconds''')
         print(f'''AVG: {num_messages / elapsed_time} messages per second''')
@@ -105,6 +105,7 @@ class BaseLoadTest(unittest.TestCase):
         return check_all_aux(name, predicted_attributes, self.__expected[3])
 
     def _check_predictions(self, file_name, predictions):
+        self.assertEqual(len(predictions), self._num_dup)
         for prediction in predictions:
             self.assertTrue(self.__check_all_categories(file_name, prediction),
                             f'''Failure in file '{file_name}': Wrong categories''')

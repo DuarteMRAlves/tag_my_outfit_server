@@ -125,7 +125,17 @@ class BaseIT(unittest.TestCase):
                         f'Failed all attributes for file \'{file_name}\'')
 
     def setUp(self) -> None:
-        self.__channel = grpc.insecure_channel("localhost:50051")
-        self._stub = PredictionServiceStub(self.__channel)
         self.__loadImageData()
         self.__loadExpectedResults()
+
+    def tearDown(self) -> None:
+        pass
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.__channel = grpc.insecure_channel("localhost:50051")
+        cls._stub = PredictionServiceStub(cls.__channel)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.__channel.close()
