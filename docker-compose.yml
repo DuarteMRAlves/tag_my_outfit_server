@@ -9,12 +9,3 @@ services:
       PORT: 50051
     ports:
     - 50051:50051
-#    networks:
-#      predict-net:
-#        ipv4_address: 172.0.0.2
-#
-#networks:
-#  predict-net:
-#    ipam:
-#      config:
-#        - subnet: 172.0.0.0/24
