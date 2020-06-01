@@ -5,12 +5,12 @@ service PredictionService {
     rpc stream_predict (stream PredictRequest) returns (StreamPredictResponse) {}
 }
 
-/* Predict request
+/* Predict Request
  * image_data: bytes of the image to process
  * all_categories (default to false): true if response should contain
- * all possible categories and false if only the selected one (Single Label)
+ *      all possible categories and false only for the selected one (Single Label)
  * all_attributes (default to false): true if response should contain
- * all possible attributes and false if only the selected ones (Multi Label)
+ *      all possible attributes and false only for the selected ones (Multi Label)
  */
 message PredictRequest {
     bytes image_data = 1;
@@ -18,7 +18,7 @@ message PredictRequest {
     bool all_attributes = 3;
 }
 
-/* Predict Reply
+/* Predict Response
  * predicted_categories: data associated with the predicted categories
  * predicted_attributes: data associated with the predicted attributes
  */
@@ -27,10 +27,17 @@ message PredictResponse {
     repeated Correspondence predicted_attributes = 3;
 }
 
+/* Predict Response for Requests stream
+ * predictions: results associated to each prediction in order
+ */
 message StreamPredictResponse {
     repeated Prediction predictions = 1;
 }
 
+/* Results associated to a single prediction in a stream request
+ * predicted_categories: data associated with the predicted categories
+ * predicted_attributes: data associated with the predicted attributes
+ */
 message Prediction {
     repeated Correspondence predicted_categories = 1;
     repeated Correspondence predicted_attributes = 2;
