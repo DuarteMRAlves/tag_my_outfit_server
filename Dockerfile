@@ -19,6 +19,9 @@ COPY --chown=user:users model model/
 COPY --chown=user:users config config/
 COPY --chown=user:users src src/
 
+# Generate gRPC code
+RUN cd src && python contract/generate_sources.py
+
 # Expose port for incomming connections
 EXPOSE ${PORT}
 
