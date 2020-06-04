@@ -3,7 +3,7 @@ from model.prediction import PredictionHandler
 from model.results import ResultsHandler
 
 
-class Service:
+class TagMyOutfitService:
 
     def __init__(self,
                  preprocess_handler: PreprocessHandler,

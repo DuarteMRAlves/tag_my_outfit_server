@@ -6,7 +6,7 @@ import pickle as pkl
 import time
 import unittest
 
-from contract.service_pb2 import PredictRequest
+from outfit_tagging.interface.service_pb2 import PredictRequest
 
 DATA_DIR = "tests/data"
 EXPECTED_DIR = "tests/expected"
@@ -97,11 +97,11 @@ class BaseLoadTest(unittest.TestCase):
         print(f'''AVG: {num_messages / elapsed_time} messages per second''')
 
     def __check_all_categories(self, name, predict_response):
-        predicted_categories = np.array([(el.label, el.value) for el in predict_response.predicted_categories])
+        predicted_categories = np.array([(el.label, el.value) for el in predict_response.categories])
         return check_all_aux(name, predicted_categories, self.__expected[1])
 
     def __check_all_attributes(self, name, predict_response):
-        predicted_attributes = np.array([(el.label, el.value) for el in predict_response.predicted_attributes])
+        predicted_attributes = np.array([(el.label, el.value) for el in predict_response.attributes])
         return check_all_aux(name, predicted_attributes, self.__expected[3])
 
     def _check_predictions(self, file_name, predictions):

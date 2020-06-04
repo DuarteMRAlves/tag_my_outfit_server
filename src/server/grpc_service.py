@@ -1,19 +1,19 @@
+from outfit_tagging.interface.service_pb2 import PredictRequest, PredictResponse, StreamPredictResponse, Prediction, Correspondence
+from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceServicer
 from annotations.profiling import profile
-from contract.service_pb2 import PredictRequest, PredictResponse, StreamPredictResponse, Prediction, Correspondence
-from contract.service_pb2_grpc import PredictionServiceServicer
-from model.service import Service
+from model.service import TagMyOutfitService
 
 
-class PredictionServerImpl(PredictionServiceServicer):
+class GrpcTagMyOutfitServiceImpl(TagMyOutfitServiceServicer):
 
-    def __init__(self, service: Service):
+    def __init__(self, service: TagMyOutfitService):
         self.__service = service
 
     @profile
     def predict(self, request: PredictRequest, context):
         categories_results, attributes_results = self.__process_single_predict(request)
-        return PredictResponse(predicted_categories=categories_results,
-                               predicted_attributes=attributes_results)
+        return PredictResponse(categories=categories_results,
+                               attributes=attributes_results)
 
     @profile
     def stream_predict(self, request_iterator, context):
@@ -22,7 +22,7 @@ class PredictionServerImpl(PredictionServiceServicer):
 
     def __process_single_request(self, request):
         categories_results, attributes_results = self.__process_single_predict(request)
-        return Prediction(predicted_categories=categories_results, predicted_attributes=attributes_results)
+        return Prediction(categories=categories_results, attributes=attributes_results)
 
     def __process_single_predict(self, request):
         image_bytes = request.image_data

@@ -1,5 +1,10 @@
-from contract.service_pb2 import PredictRequest, StreamPredictResponse
+from typing import TYPE_CHECKING
+from outfit_tagging.interface.service_pb2 import PredictRequest
 from tests.integration.base_integration_test import BaseIT
+
+if TYPE_CHECKING:
+    from typing import List
+    from outfit_tagging.interface.service_pb2 import StreamPredictResponse
 
 
 class ClientStreamingIT(BaseIT):
@@ -25,9 +30,9 @@ class ClientStreamingIT(BaseIT):
         # Build generator of predictions
         batch_iter = self.__generate_batch(True, True)
         # Execute prediction
-        response: StreamPredictResponse = self._stub.stream_predict(batch_iter)
+        response: 'StreamPredictResponse' = self._stub.stream_predict(batch_iter)
         # Check results
-        predictions: list = [el for el in response.predictions]
+        predictions: 'List' = [el for el in response.predictions]
         self.assertEqual(len(predictions), len(self._image_bytes), self.__diff_len_msg(len(self._image_bytes)))
         for name, prediction in zip(self._image_bytes.keys(), predictions):
             self._check_all_categories(name, prediction)
@@ -39,9 +44,9 @@ class ClientStreamingIT(BaseIT):
         # Build generator of predictions
         batch_iter = self.__generate_batch(True, False)
         # Execute prediction
-        response: StreamPredictResponse = self._stub.stream_predict(batch_iter)
+        response: 'StreamPredictResponse' = self._stub.stream_predict(batch_iter)
         # Check results
-        predictions: list = [el for el in response.predictions]
+        predictions: 'List' = [el for el in response.predictions]
         self.assertTrue(len(predictions) == len(self._image_bytes), self.__diff_len_msg(len(self._image_bytes)))
         for name, prediction in zip(self._image_bytes.keys(), predictions):
             self._check_all_categories(name, prediction)
@@ -53,9 +58,9 @@ class ClientStreamingIT(BaseIT):
         # Build generator of predictions
         batch_iter = self.__generate_batch(False, True)
         # Execute prediction
-        response: StreamPredictResponse = self._stub.stream_predict(batch_iter)
+        response: 'StreamPredictResponse' = self._stub.stream_predict(batch_iter)
         # Check results
-        predictions: list = [el for el in response.predictions]
+        predictions: 'List' = [el for el in response.predictions]
         self.assertTrue(len(predictions) == len(self._image_bytes), self.__diff_len_msg(len(self._image_bytes)))
         for name, prediction in zip(self._image_bytes.keys(), predictions):
             self._check_selected_category(name, prediction)
@@ -67,9 +72,9 @@ class ClientStreamingIT(BaseIT):
         # Build generator of predictions
         batch_iter = self.__generate_batch(False, False)
         # Execute prediction
-        response: StreamPredictResponse = self._stub.stream_predict(batch_iter)
+        response: 'StreamPredictResponse' = self._stub.stream_predict(batch_iter)
         # Check results
-        predictions: list = [el for el in response.predictions]
+        predictions: 'List' = [el for el in response.predictions]
         self.assertTrue(len(predictions) == len(self._image_bytes), self.__diff_len_msg(len(self._image_bytes)))
         for name, prediction in zip(self._image_bytes.keys(), predictions):
             self._check_selected_category(name, prediction)
@@ -83,9 +88,9 @@ class ClientStreamingIT(BaseIT):
         ]
         batch_iter = self.__generate_mixed_batch(prediction_params)
         # Execute prediction
-        response: StreamPredictResponse = self._stub.stream_predict(batch_iter)
+        response: 'StreamPredictResponse' = self._stub.stream_predict(batch_iter)
         # Check results
-        predictions: list = [el for el in response.predictions]
+        predictions: 'List' = [el for el in response.predictions]
         self.assertTrue(len(predictions) == len(self._image_bytes), self.__diff_len_msg(len(self._image_bytes)))
         for name, prediction, prediction_param in zip(self._image_bytes.keys(), predictions, prediction_params):
             if prediction_param[0]:

@@ -23,7 +23,7 @@ def read_file(file):
         return fp.read()
 
 
-class PreprocessServiceTest(unittest.TestCase):
+class PreprocessHandlerUT(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

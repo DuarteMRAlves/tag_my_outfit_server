@@ -1,16 +1,18 @@
+import grpc
+import logging
+import pickle as pkl
+import time
 from concurrent import futures
-from server.grpc_service import PredictionServerImpl
-from contract.service_pb2_grpc import add_PredictionServiceServicer_to_server
-from model.service import Service
+from outfit_tagging.interface.service_pb2_grpc import add_TagMyOutfitServiceServicer_to_server
+
+from model.service import TagMyOutfitService
 from model.preprocess import PreprocessHandler
 from model.prediction import PredictionHandler
 from model.results import ResultsHandler
 from model.encoder import Encoder
 from server.context import Context
-import grpc
-import logging
-import pickle as pkl
-import time
+from server.grpc_service import GrpcTagMyOutfitServiceImpl
+
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
@@ -40,12 +42,12 @@ def startServer():
     prediction_handler: PredictionHandler = PredictionHandler(model_weights_path, n_categories, n_attributes)
     results_handler: ResultsHandler = ResultsHandler(categories_encoder, n_categories, attributes_encoder, n_attributes)
 
-    service = Service(preprocess_handler, prediction_handler, results_handler)
-    service_impl = PredictionServerImpl(service)
+    service = TagMyOutfitService(preprocess_handler, prediction_handler, results_handler)
+    service_impl = GrpcTagMyOutfitServiceImpl(service)
 
     # Init server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=100))
-    add_PredictionServiceServicer_to_server(service_impl, server)
+    add_TagMyOutfitServiceServicer_to_server(service_impl, server)
     server.add_insecure_port(f'{server_context.host}:{server_context.port}')
     server.start()
     logging.info(f'Server running at {server_context.host}:{server_context.port}')

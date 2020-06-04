@@ -3,8 +3,8 @@ import os
 
 from itertools import zip_longest
 
-from contract.service_pb2_grpc import PredictionServiceStub
-from contract.service_pb2 import StreamPredictResponse
+from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceStub
+from outfit_tagging.interface.service_pb2 import StreamPredictResponse
 from tests.load.base_load_test import BaseLoadTest
 
 
@@ -18,7 +18,7 @@ class ClientStreamingLT(BaseLoadTest):
     @staticmethod
     def __send_requests(requests, file_name):
         channel = grpc.insecure_channel("localhost:50051")
-        stub = PredictionServiceStub(channel)
+        stub = TagMyOutfitServiceStub(channel)
         num_requests = len(requests)
         print(f"""{os.getpid()} started for file {file_name}""")
         predictions = []

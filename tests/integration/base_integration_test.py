@@ -7,7 +7,7 @@ import unittest
 
 
 from collections import OrderedDict
-from contract.service_pb2_grpc import PredictionServiceStub
+from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceStub
 
 
 TOLERANCE = 1e-06
@@ -76,7 +76,7 @@ class BaseIT(unittest.TestCase):
         expected_label = expected_df[expected_df == 1].index[0]
         expected_prob_df: pd.DataFrame = self.__expected[1].loc[file_name]
         expected_prob = expected_prob_df[expected_label]
-        predicted_categories = prediction.predicted_categories
+        predicted_categories = prediction.categories
         # Assert num predictions
         self.assertEqual(len(predicted_categories), 1,
                          self.__wrong_len_msg('categories', file_name, 1, len(predicted_categories)))
@@ -92,7 +92,7 @@ class BaseIT(unittest.TestCase):
         expected_prediction = expected_df[expected_df == 1].index
         expected_prob_df: pd.DataFrame = self.__expected[3].loc[file_name]
         expected_prob_prediction = expected_prob_df[expected_prediction]
-        predicted_attributes = predict_response.predicted_attributes
+        predicted_attributes = predict_response.attributes
         # Assert num predictions
         self.assertEqual(len(expected_prediction), len(predicted_attributes),
                          self.__wrong_len_msg('attributes', file_name, len(expected_prediction), len(predicted_attributes)))
@@ -115,12 +115,12 @@ class BaseIT(unittest.TestCase):
         return _is_close_df(predicted_attributes_df, predicted_attributes_expected)
 
     def _check_all_categories(self, file_name, predict_response):
-        predicted_categories = np.array([(el.label, el.value) for el in predict_response.predicted_categories])
+        predicted_categories = np.array([(el.label, el.value) for el in predict_response.categories])
         self.assertTrue(self.__check_all_aux(file_name, predicted_categories, self.__expected[1]),
                         f'Failed all categories for file \'{file_name}\'')
 
     def _check_all_attributes(self, file_name, predict_response):
-        predicted_attributes = np.array([(el.label, el.value) for el in predict_response.predicted_attributes])
+        predicted_attributes = np.array([(el.label, el.value) for el in predict_response.attributes])
         self.assertTrue(self.__check_all_aux(file_name, predicted_attributes, self.__expected[3]),
                         f'Failed all attributes for file \'{file_name}\'')
 
@@ -134,7 +134,7 @@ class BaseIT(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.__channel = grpc.insecure_channel("localhost:50051")
-        cls._stub = PredictionServiceStub(cls.__channel)
+        cls._stub = TagMyOutfitServiceStub(cls.__channel)
 
     @classmethod
     def tearDownClass(cls) -> None:
