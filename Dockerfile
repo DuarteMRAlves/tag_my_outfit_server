@@ -1,3 +1,4 @@
+# Start from debian slim buster with python install
 FROM python:3.6.10-slim-buster
 
 # Install packages (common utilis for network debuging)
@@ -8,11 +9,12 @@ RUN apt-get update && apt-get -y upgrade && \
 COPY requirements.txt /opt/requirements.txt
 RUN pip install -r /opt/requirements.txt
 
-# Install gRPC service interface
+# Install gRPC service interface from github repository
 RUN git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_interface.git && \
     cd tag_my_outfit_interface/python && \
     make && \
     cd ../.. && \
+    # Remove code now that package is installed
     rm -rf tag_my_outfit_interface
 
 # Clean files

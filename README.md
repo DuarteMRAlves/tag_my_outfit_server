@@ -1,34 +1,54 @@
-# Fashion Prediction
+# Tag My Outfit
+
+## Overview
+
+This project implements a gRPC service to classify clothing parts within a set of categories, as well as predict their attributes.
 
 ## API Reference
 
-The server implements the contract specified in the [service proto file](src/contract/service.proto).
+The server implements the gRPC interface specified in the [tag_my_outfit_interface](https://github.com/DuarteMRAlves/tag_my_outfit_interface) github project.
 
-## Deployment
+## Technologies
 
-### Docker Deployment
+ * [Python](https://www.python.org)
 
-The project can be deployed with docker. In order to achieve that, it's only required a docker installation, since all other project requirements will be installed in the generated docker image. Also, a [docker-compose file](docker-compose.yml) is provided for a simple deployment. 
+ * [Keras](https://keras.io)
+ 
+ * [TensorFlow](https://www.tensorflow.org)
+ 
+ * [Scikit-learn](https://scikit-learn.org/stable/)
+ 
+ * [SciPy](https://www.scipy.org)
+ 
+ * [NumPy](https://numpy.org)
+ 
+ * [gRPC](https://grpc.io)
+ 
+ * [Docker](https://www.docker.com)
 
-In order to deploy the docker container, execute the following commands:
+## Getting Started
 
- * Build the docker image
+### Installing
+
+The project was developed with python v3.6.10, the [gRPC interface package](https://github.com/DuarteMRAlves/tag_my_outfit_interface/tree/v0.0.1) v0.0.1, and the package's versions in the [requirements file](requirements.txt) so it's recommended to use the same software.
+
+The installation steps are as follows:
+
+ * Install [python](https://www.python.org/downloads/) and the [interface package v0.0.1](https://github.com/DuarteMRAlves/tag_my_outfit_interface/tree/v0.0.1) by following the respective page's instructions
+ 
+ * Clone the github repository:
+ 
+```
+$ git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_server.git
+```
+ 
+ * Install the necessary packages by running the following command in the project's root directory:
 
 ```
-$ docker-compose build
+$ pip install -r requirements.txt
 ```
 
- * Start the server
-
-```
-$ docker-compose up
-```
-
-### Non-Docker Deployment
-
-The project can run without docker. For that, a python installation is required, along with the packages in the [requirements file](requirements.txt).
-
-The project was developed with python v3.6.10 and the package's versions in the [requirements file](requirements.txt) so it's recommended to use the same software.
+### Running
 
 With the required software installed, we can start the server with the following command, executed in the project's root directory:
 
@@ -36,33 +56,55 @@ With the required software installed, we can start the server with the following
 $ python src/server.py
 ```
 
-## Testing
+### Testing
 
 The project tests require the unittest package. All the following commands should be executed inside the project's root directory.
 
-### Unit testing
+#### Unit testing
 
-This tests do not need the server running and only verify if key project components are functional and can be executed with the following command:
+This tests do not need the server running and only verifies if key project components are functional:
 
 ```
 $ python -m unittest discover -s tests/unit/ -p *.py
 ```
 
-### Integration testing
+#### Integration testing
 
-This tests need the server running (to run the server follow the steps in the [Deployment Section](#deployment)) and will create clients to exhaustively test the server functionality.
-They can be executed with the following command:
+This tests need the server running (to run the server follow the steps in the [Deployment Section](#deployment)) and will create clients to exhaustively test the server functionality:
 
 ```
 $ python -m unittest discover -s tests/integration/ -p *.py
 ```
 
-### Load testing
+#### Load testing
 
 This tests also require that the server is running, and will check its performance and correctness in a load scenario by sending multiple requests simultaneously. 
-Not all possible combinations of message parameters are not tested since the [Integration Tests](#integration-tests) will cover all cases.
-To run the tests execute the command:
+Not all possible combinations of message parameters are not tested since the [Integration Tests](#integration-testing) will cover all cases:
 
 ```
 $ python -m unittest discover -s tests/load/ -p *.py
+```
+
+## Deployment
+
+The project can be deployed with docker, and does not need any other pre-requisites since they will be installed in the generated image. In order to achieve that, execute the following steps:
+
+ * Install [docker](https://docs.docker.com/get-docker/) by following the page instructions
+
+ * Clone the github repository:
+
+```
+$ git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_server.git
+```
+
+ * From inside the project directory, build the docker image:
+
+```
+$ docker-compose build
+```
+
+ * Start the server:
+
+```
+$ docker-compose up
 ```
