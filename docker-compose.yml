@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  prediction:
-    image: deep_fashion:latest
+  tag_my_outfit:
+    image: tag_my_outfit:0.0.1
     build:
       context: .
     environment:
