@@ -23,7 +23,7 @@ def read_file(file):
         return fp.read()
 
 
-class PreprocessServiceTest(unittest.TestCase):
+class PreprocessHandlerUT(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,10 +38,20 @@ class PreprocessServiceTest(unittest.TestCase):
             img = np.expand_dims(img, axis=0)
             self.expected[file] = vgg16.preprocess_input(img)
 
-    def test_data_image_preprocess_result(self):
+    def test_image_preprocess(self):
         print()
         for file in FILES:
             print(f"""Testing Preprocess {file}""")
             image_data = read_file(DATA_DIR + '/' + file)
             img, _ = self.service.preprocess_image(image_data)
             self.assertTrue(np.all(np.equal(img, self.expected[file])))
+
+    def test_image_batch_preprocess(self):
+        print()
+        print("Testing batch preprocess")
+        image_batch_data = [read_file(DATA_DIR + '/' + file) for file in FILES]
+        preprocessed_data = self.service.preprocess_image_batch(image_batch_data)
+        for i in range(len(FILES)):
+            img = next(preprocessed_data)[0]
+            expected = self.expected[FILES[i]]
+            self.assertTrue(np.all(np.equal(img, expected)))

@@ -45,7 +45,7 @@ def is_close_df(df1, df2):
     ])
 
 
-class PredictionServerImplTest(unittest.TestCase):
+class PredictionHandlerUT(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,8 +53,7 @@ class PredictionServerImplTest(unittest.TestCase):
     def setUp(self) -> None:
         config = Context()
         self.expected = []
-        work_dir: str = config.work_dir
-        model_dir: str = work_dir + '/' + config.model_dir
+        model_dir: str = config.model_dir
         categories_path: str = model_dir + '/' + config.ohe_categories
         attributes_path: str = model_dir + '/' + config.ohe_attributes
         weights_path: str = model_dir + '/' + config.weights
