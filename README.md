@@ -28,6 +28,10 @@ The server implements the gRPC interface specified in the [tag_my_outfit_interfa
 
 ## Getting Started
 
+### Pre-Requisites
+
+In order to clone the project github repository, it's required to install [git large file system](https://github.com/git-lfs/git-lfs?utm_source=gitlfs_site&utm_medium=repo_link&utm_campaign=gitlfs) to download the model weights file.
+
 ### Installing
 
 The project was developed with python v3.6.10, the [gRPC interface package](https://github.com/DuarteMRAlves/tag_my_outfit_interface/tree/v0.0.1) v0.0.1, and the package's versions in the [requirements file](requirements.txt) so it's recommended to use the same software.
@@ -79,7 +83,7 @@ $ python -m unittest discover -s tests/integration/ -p *.py
 #### Load testing
 
 This tests also require that the server is running, and will check its performance and correctness in a load scenario by sending multiple requests simultaneously. 
-Not all possible combinations of message parameters are not tested since the [Integration Tests](#integration-testing) will cover all cases:
+Not all possible combinations of message parameters are tested since [Integration Tests](#integration-testing) will cover all cases:
 
 ```
 $ python -m unittest discover -s tests/load/ -p *.py
@@ -87,17 +91,15 @@ $ python -m unittest discover -s tests/load/ -p *.py
 
 ## Deployment
 
-The project can be deployed with docker, and does not need any other pre-requisites since they will be installed in the generated image. In order to achieve that, execute the following steps:
+The project can be deployed with docker, and does not need any other pre-requisites since they will be installed in the generated image.
+Also, a docker-compose file is provided for an easy deployment with default configurations.
+In order to achieve that, execute the following steps:
 
- * Install [docker](https://docs.docker.com/get-docker/) by following the page instructions
+ * Install [docker](https://docs.docker.com/get-docker/) and [docker compose](https://docs.docker.com/compose/install/) by following the respective page's instructions *(Note: Docker compose might be automatically installed with docker)*
 
- * Clone the github repository:
+ * Download the [Dockerfile](Dockerfile) and [docker-compose](docker-compose.yml) files from the github repository
 
-```
-$ git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_server.git
-```
-
- * From inside the project directory, build the docker image:
+ * Build the docker image:
 
 ```
 $ docker-compose build
