@@ -130,3 +130,4 @@ dmypy.json
 
 # Project ignore
 /logs
+/model/weights.h5

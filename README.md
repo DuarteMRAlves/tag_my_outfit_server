@@ -2,11 +2,21 @@
 
 ## Overview
 
-This project implements a gRPC service to classify clothing parts within a set of categories, as well as predict their attributes.
+This project implements a gRPC service to classify clothing parts within a set of categories, as well as predict their attributes, in a given image.
+
+## Model Description
+
+The prediction model is the [Visual Semantic Attention Model (VSAM)](http://openaccess.thecvf.com/content_ICCVW_2019/papers/CVFAD/Ferreira_Pose_Guided_Attention_for_Multi-Label_Fashion_Image_Classification_ICCVW_2019_paper.pdf), a compact framework with guided attention for multi-label classification in the fashion domain.
+This model is supervised by automatic pose extraction creating a discriminative feature space.
+
+The code made available through this service allows performing inference with the VSAM model pre-trained on the [DeepFashion dataset](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html).
+The provided model weights were obtained by training VSAM on the training set and validating on the validation set of the previous dataset.
+
+![model architecture](assets/img/model_architecture.png)
 
 ## API Reference
 
-The server implements the gRPC interface specified in the [tag_my_outfit_interface](https://github.com/DuarteMRAlves/tag_my_outfit_interface) github project.
+The server implements the gRPC interface specified in the [tag_my_outfit_interface](https://github.com/sipg-isr/tag_my_outfit_interface) github project.
 
 ## Technologies
 
@@ -25,25 +35,46 @@ The server implements the gRPC interface specified in the [tag_my_outfit_interfa
  * [gRPC](https://grpc.io)
  
  * [Docker](https://www.docker.com)
+ 
+## Usage
 
-## Getting Started
+The project can be deployed with docker. The [docker image](insert link here) can be obtained from [docker hub](https://hub.docker.com).
+A docker-compose file is provided for an easy deployment with default configurations.
 
-### Pre-Requisites
+In order to achieve that, execute the following steps:
 
-In order to clone the project github repository, it's required to install [git large file system](https://github.com/git-lfs/git-lfs?utm_source=gitlfs_site&utm_medium=repo_link&utm_campaign=gitlfs) to download the model weights file.
+ * Install [docker](https://docs.docker.com/get-docker/) and [docker compose](https://docs.docker.com/compose/install/) by following the respective page's instructions *(Note: Docker compose might be automatically installed with docker)*
+
+ * Download the [docker-compose](docker-compose.yml) file from the github repository
+
+ * Start the server *(The image will be automatically downloaded)*:
+
+```
+$ docker-compose up
+```
+
+## Developers
+
+### Requirements
+
+ * [Python 3.6+](https://www.python.org)
+ 
+ * [gRPC interface package 0.0.1](https://github.com/sipg-isr/tag_my_outfit_interface)
+
+ * [Python packages](requirements.txt)
 
 ### Installing
 
-The project was developed with python v3.6.10, the [gRPC interface package](https://github.com/DuarteMRAlves/tag_my_outfit_interface/tree/v0.0.1) v0.0.1, and the package's versions in the [requirements file](requirements.txt) so it's recommended to use the same software.
+The project was developed with python v3.6.10, the [gRPC interface package](https://github.com/sipg-isr/tag_my_outfit_interface) v0.0.1, and the package's versions in the [requirements file](requirements.txt) so it's recommended to use the same software.
 
 The installation steps are as follows:
 
- * Install [python](https://www.python.org/downloads/) and the [interface package v0.0.1](https://github.com/DuarteMRAlves/tag_my_outfit_interface/tree/v0.0.1) by following the respective page's instructions
+ * Install [python](https://www.python.org/downloads/) and the [interface package v0.0.1](https://github.com/sipg-isr/tag_my_outfit_interface) by following the respective page's instructions
  
- * Clone the github repository:
+ * Clone the github repository *(Specific versions are marked by tags)*:
  
 ```
-$ git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_server.git
+$ git clone https://github.com/sipg-isr/tag_my_outfit_server.git
 ```
  
  * Install the necessary packages by running the following command in the project's root directory:
@@ -51,6 +82,8 @@ $ git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_server.git
 ```
 $ pip install -r requirements.txt
 ```
+
+ * Download the [weights file](https://drive.google.com/file/d/1QSSPlzISjjjipk1w8kPi--UJDEE7ds2Y/view?usp=sharing) and place it in the `model` folder with the name `weights.h5`
 
 ### Running
 
@@ -69,44 +102,37 @@ The project tests require the unittest package. All the following commands shoul
 This tests do not need the server running and only verifies if key project components are functional:
 
 ```
-$ python -m unittest discover -s tests/unit/ -p *.py
+$ python -m unittest discover -s "tests/unit/" -p "*.py"
 ```
 
 #### Integration testing
 
-This tests need the server running (to run the server follow the steps in the [Deployment Section](#deployment)) and will create clients to exhaustively test the server functionality:
+This tests need the server running and will create clients to exhaustively test the server functionality:
 
 ```
-$ python -m unittest discover -s tests/integration/ -p *.py
+$ python -m unittest discover -s "tests/integration/" -p "*.py"
 ```
 
 #### Load testing
 
 This tests also require that the server is running, and will check its performance and correctness in a load scenario by sending multiple requests simultaneously. 
-Not all possible combinations of message parameters are tested since [Integration Tests](#integration-testing) will cover all cases:
+Not every combination of message parameters is tested since [Integration Tests](#integration-testing) will cover all cases:
 
 ```
-$ python -m unittest discover -s tests/load/ -p *.py
+$ python -m unittest discover -s "tests/load/" -p "*.py"
 ```
 
-## Deployment
+## License
 
-The project can be deployed with docker, and does not need any other pre-requisites since they will be installed in the generated image.
-Also, a docker-compose file is provided for an easy deployment with default configurations.
-In order to achieve that, execute the following steps:
+This project is released under the [MIT License](LICENSE.md).
 
- * Install [docker](https://docs.docker.com/get-docker/) and [docker compose](https://docs.docker.com/compose/install/) by following the respective page's instructions *(Note: Docker compose might be automatically installed with docker)*
-
- * Download the [Dockerfile](Dockerfile) and [docker-compose](docker-compose.yml) files from the github repository
-
- * Build the docker image:
+## Citing
 
 ```
-$ docker-compose build
-```
-
- * Start the server:
-
-```
-$ docker-compose up
+@Inproceedings{QuintinoFerreira2019,
+  author    = {Quintino Ferreira, Beatriz and Costeira, J.P and Sousa, Ricardo G. and Gui, Liang-Yan and Gomes, João P.},
+  title     = {{Pose Guided Attention for Multi-label Fashion Image Classification}},
+  booktitle = {IEEE International Conference on Computer Vision (ICCV) Workshop on Computer Vision for Fashion, Art and Design},
+  year      = {2019} ,
+}
 ```
