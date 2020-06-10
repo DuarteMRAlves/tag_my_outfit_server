@@ -1,9 +1,7 @@
-version: '3.8'
+version: '3'
 services:
   tag_my_outfit:
-    image: tag_my_outfit:0.0.1
-    build:
-      context: .
+    image: sipgisr/tag-my-outfit:0.0.1
     environment:
       HOST: "[::]"
       PORT: 50051

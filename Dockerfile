@@ -3,21 +3,19 @@ FROM debian:buster as builder
 
 # Install git and git lfs to clone repositories
 RUN apt-get update && apt-get -y upgrade && \
-    apt-get install -y --no-install-recommends git git-lfs ca-certificates && \
-    git lfs install
+    apt-get install -y --no-install-recommends git ca-certificates
 
 # Set workdir to opt
 WORKDIR /opt
 
-# Clone interface and server repository from v0.0.1 tag
-RUN git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_interface.git && \
-    git clone -b v0.0.1 https://github.com/DuarteMRAlves/tag_my_outfit_server.git
+# Clone interface repository from v0.0.1 tag
+RUN git clone -b v0.0.1 https://github.com/sipg-isr/tag_my_outfit_interface.git
 
 # Start from debian slim buster with python install
 FROM python:3.6.10-slim-buster
 
 # Install python packages
-COPY --from=builder /opt/tag_my_outfit_server/requirements.txt /opt/requirements.txt
+COPY requirements.txt /opt/requirements.txt
 RUN pip install -r /opt/requirements.txt
 
 # Install gRPC service interface package
@@ -34,11 +32,11 @@ RUN cd /opt/tag_my_outfit_interface/python && \
 RUN useradd -m -g users -s /bin/bash user
 USER user:users
 
-# Copy src and necessary files to workdir
+# Copy source code and necessary files to workdir
 WORKDIR /home/user
-COPY --from=builder --chown=user:users /opt/tag_my_outfit_server/model model/
-COPY --from=builder --chown=user:users /opt/tag_my_outfit_server/config config/
-COPY --from=builder --chown=user:users /opt/tag_my_outfit_server/src src/
+COPY --chown=user:users model model/
+COPY --chown=user:users config config/
+COPY --chown=user:users src src/
 
 # Expose port for incomming connections
 EXPOSE ${PORT}
