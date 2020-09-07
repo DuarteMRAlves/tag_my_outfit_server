@@ -2,7 +2,10 @@ import grpc
 import logging
 import pickle as pkl
 import time
+
 from concurrent import futures
+from grpc_reflection.v1alpha import reflection
+from outfit_tagging.interface.service_pb2 import DESCRIPTOR
 from outfit_tagging.interface.service_pb2_grpc import add_TagMyOutfitServiceServicer_to_server
 
 from model.service import TagMyOutfitService
@@ -15,6 +18,7 @@ from server.grpc_service import GrpcTagMyOutfitServiceImpl
 
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
+_SERVICE_NAME = 'TagMyOutfitService'
 
 
 def load_encoder(file):
@@ -25,7 +29,7 @@ def load_encoder(file):
     return encoder, n_classes
 
 
-def startServer():
+def start_server():
     # Get configs
     server_context = Context()
     model_dir = server_context.model_dir
@@ -48,6 +52,12 @@ def startServer():
     # Init server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=100))
     add_TagMyOutfitServiceServicer_to_server(service_impl, server)
+    # Enable server reflection
+    SERVICE_NAMES = (
+        DESCRIPTOR.services_by_name[_SERVICE_NAME].full_name,
+        reflection.SERVICE_NAME,
+    )
+    reflection.enable_server_reflection(SERVICE_NAMES, server)
     server.add_insecure_port(f'{server_context.host}:{server_context.port}')
     server.start()
     logging.info(f'Server running at {server_context.host}:{server_context.port}')
@@ -60,4 +70,4 @@ def startServer():
 
 
 if __name__ == '__main__':
-    startServer()
+    start_server()
