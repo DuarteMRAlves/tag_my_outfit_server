@@ -1,4 +1,4 @@
-from outfit_tagging.interface.service_pb2 import PredictRequest, PredictResponse
+from tag_my_outfit_pb2 import PredictRequest, PredictResponse
 from tests.integration.base_integration_test import BaseIT
 
 

@@ -3,8 +3,8 @@ import os
 
 from itertools import zip_longest
 
-from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceStub
-from outfit_tagging.interface.service_pb2 import StreamPredictResponse
+from tag_my_outfit_pb2_grpc import TagMyOutfitServiceStub
+from tag_my_outfit_pb2 import StreamPredictResponse
 from tests.load.base_load_test import BaseLoadTest
 
 

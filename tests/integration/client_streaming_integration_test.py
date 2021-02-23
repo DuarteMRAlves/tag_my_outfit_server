@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
-from outfit_tagging.interface.service_pb2 import PredictRequest
+from tag_my_outfit_pb2 import PredictRequest
 from tests.integration.base_integration_test import BaseIT
 
 if TYPE_CHECKING:
     from typing import List
-    from outfit_tagging.interface.service_pb2 import StreamPredictResponse
+    from tag_my_outfit_pb2 import StreamPredictResponse
 
 
 class ClientStreamingIT(BaseIT):

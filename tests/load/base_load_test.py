@@ -6,7 +6,7 @@ import pickle as pkl
 import time
 import unittest
 
-from outfit_tagging.interface.service_pb2 import PredictRequest
+from tag_my_outfit_pb2 import PredictRequest
 
 DATA_DIR = "tests/data"
 EXPECTED_DIR = "tests/expected"

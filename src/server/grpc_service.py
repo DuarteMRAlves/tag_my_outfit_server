@@ -1,5 +1,5 @@
-from outfit_tagging.interface.service_pb2 import PredictRequest, PredictResponse, StreamPredictResponse, Prediction, Correspondence
-from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceServicer
+from tag_my_outfit_pb2 import PredictRequest, PredictResponse, StreamPredictResponse, Prediction, Correspondence
+from tag_my_outfit_pb2_grpc import TagMyOutfitServiceServicer
 from annotations.profiling import profile
 from model.service import TagMyOutfitService
 

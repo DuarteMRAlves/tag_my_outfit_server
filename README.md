@@ -58,18 +58,14 @@ $ docker-compose up
 ### Requirements
 
  * [Python 3.6+](https://www.python.org)
- 
- * [gRPC interface package 0.0.1](https://github.com/sipg-isr/tag_my_outfit_interface)
 
  * [Python packages](requirements.txt)
 
 ### Installing
 
-The project was developed with python v3.6.10, the [gRPC interface package](https://github.com/sipg-isr/tag_my_outfit_interface) v0.0.1, and the package's versions in the [requirements file](requirements.txt) so it's recommended to use the same software.
-
 The installation steps are as follows:
 
- * Install [python](https://www.python.org/downloads/) and the [interface package v0.0.1](https://github.com/sipg-isr/tag_my_outfit_interface) by following the respective page's instructions
+ * Install [python](https://www.python.org/downloads/) by following the respective page's instructions
  
  * Clone the github repository *(Specific versions are marked by tags)*:
  

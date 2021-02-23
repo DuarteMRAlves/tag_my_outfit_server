@@ -1,12 +1,12 @@
+import concurrent.futures as futures
 import grpc
 import logging
 import pickle as pkl
 import time
 
-from concurrent import futures
 from grpc_reflection.v1alpha import reflection
-from outfit_tagging.interface.service_pb2 import DESCRIPTOR
-from outfit_tagging.interface.service_pb2_grpc import add_TagMyOutfitServiceServicer_to_server
+from tag_my_outfit_pb2 import DESCRIPTOR
+from tag_my_outfit_pb2_grpc import add_TagMyOutfitServiceServicer_to_server
 
 from model.service import TagMyOutfitService
 from model.preprocess import PreprocessHandler

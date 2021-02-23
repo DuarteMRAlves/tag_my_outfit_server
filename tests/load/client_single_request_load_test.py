@@ -1,7 +1,7 @@
 import grpc
 import os
 
-from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceStub
+from tag_my_outfit_pb2_grpc import TagMyOutfitServiceStub
 from tests.load.base_load_test import BaseLoadTest
 
 

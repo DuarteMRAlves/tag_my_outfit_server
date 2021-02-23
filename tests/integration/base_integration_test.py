@@ -1,3 +1,5 @@
+# Dummy import so that import grpc works
+import concurrent.futures
 import grpc
 import numpy as np
 import pandas as pd
@@ -7,7 +9,7 @@ import unittest
 
 
 from collections import OrderedDict
-from outfit_tagging.interface.service_pb2_grpc import TagMyOutfitServiceStub
+from tag_my_outfit_pb2_grpc import TagMyOutfitServiceStub
 
 
 TOLERANCE = 1e-06
