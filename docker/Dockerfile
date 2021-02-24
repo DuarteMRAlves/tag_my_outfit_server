@@ -64,7 +64,7 @@ COPY --chown=${USER}:${GROUP} config ${WORKSPACE}/config/
 COPY --chown=${USER}:${GROUP} src ${WORKSPACE}/src/
 
 # Expose port for incomming connections
-EXPOSE ${PORT}
+EXPOSE 8061
 
 # Run the server
 CMD ["python", "src/server.py"]

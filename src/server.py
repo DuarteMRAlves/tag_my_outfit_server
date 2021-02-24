@@ -20,6 +20,10 @@ from server.grpc_service import GrpcTagMyOutfitServiceImpl
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 _SERVICE_NAME = 'TagMyOutfitService'
 
+# By default listen on all interfaces on port 8061
+_DEFAULT_HOST = '[::]'
+_DEFAULT_PORT = 8061
+
 
 def load_encoder(file):
     with open(file, 'rb') as fp:
@@ -58,9 +62,14 @@ def start_server():
         reflection.SERVICE_NAME,
     )
     reflection.enable_server_reflection(SERVICE_NAMES, server)
-    server.add_insecure_port(f'{server_context.host}:{server_context.port}')
+
+    # Find host and port and start server
+    host = server_context.host if hasattr(server_context, 'host') else _DEFAULT_HOST
+    port = server_context.port if hasattr(server_context, 'port') else _DEFAULT_PORT
+    server.add_insecure_port(f'{host}:{port}')
     server.start()
-    logging.info(f'Server running at {server_context.host}:{server_context.port}')
+    logging.info(f'Server running at {host}:{port}')
+
     try:
         while True:
             time.sleep(_ONE_DAY_IN_SECONDS)

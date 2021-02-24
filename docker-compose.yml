@@ -2,8 +2,5 @@ version: '3'
 services:
   tag_my_outfit:
     image: sipgisr/tag-my-outfit:latest
-    environment:
-      HOST: "[::]"
-      PORT: 50051
     ports:
-    - 50051:50051
+    - 8061:8061

@@ -14,10 +14,6 @@ The provided model weights were obtained by training VSAM on the training set an
 
 ![model architecture](assets/img/model_architecture.png)
 
-## API Reference
-
-The server implements the gRPC interface specified in the [tag_my_outfit_interface](https://github.com/sipg-isr/tag_my_outfit_interface) github project.
-
 ## Technologies
 
  * [Python](https://www.python.org)
@@ -95,7 +91,7 @@ The project tests require the unittest package. All the following commands shoul
 
 #### Unit testing
 
-This tests do not need the server running and only verifies if key project components are functional:
+These tests do not need the server running and only verifies if key project components are functional:
 
 ```
 $ python -m unittest discover -s "tests/unit/" -p "*.py"
@@ -103,7 +99,7 @@ $ python -m unittest discover -s "tests/unit/" -p "*.py"
 
 #### Integration testing
 
-This tests need the server running and will create clients to exhaustively test the server functionality:
+These tests need the server running and will create clients to exhaustively test the server functionality:
 
 ```
 $ python -m unittest discover -s "tests/integration/" -p "*.py"
@@ -111,7 +107,7 @@ $ python -m unittest discover -s "tests/integration/" -p "*.py"
 
 #### Load testing
 
-This tests also require that the server is running, and will check its performance and correctness in a load scenario by sending multiple requests simultaneously. 
+These tests also require that the server is running, and will check its performance and correctness in a load scenario by sending multiple requests simultaneously. 
 Not every combination of message parameters is tested since [Integration Tests](#integration-testing) will cover all cases:
 
 ```

@@ -9,7 +9,7 @@ class ClientSingleRequestLT(BaseLoadTest):
 
     @staticmethod
     def __send_requests(requests, file_name):
-        channel = grpc.insecure_channel("localhost:50051")
+        channel = grpc.insecure_channel("localhost:8061")
         stub = TagMyOutfitServiceStub(channel)
         num_requests = len(requests)
         print(f"""{os.getpid()} started for file {file_name}""")

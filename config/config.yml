@@ -1,6 +1,6 @@
 environment:
   host: '[::]'
-  port: 50051
+  port: 8061
 server_variables:
   model_dir: model
   logs_dir: logs

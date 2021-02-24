@@ -135,7 +135,7 @@ class BaseIT(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.__channel = grpc.insecure_channel("localhost:50051")
+        cls.__channel = grpc.insecure_channel("localhost:8061")
         cls._stub = TagMyOutfitServiceStub(cls.__channel)
 
     @classmethod

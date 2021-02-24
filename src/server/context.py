@@ -5,7 +5,7 @@ from itertools import starmap
 
 _CONFIG_FILE = 'config/config.yml'
 
-_LOG_FORMAT = '%(levelname)s [%(asctime)s]: %(message)s'
+_LOG_FORMAT = '[ %(levelname)s ] %(asctime)s (%(module)s) %(message)s'
 _LOG_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 _AVAILABLE_LOG_LEVELS = [
     logging.CRITICAL,
@@ -47,27 +47,29 @@ class Context:
                 return self.__environment[name]
             if name in self.__config:
                 return self.__config[name]
-            logging.warning(f'''context variable not found: \'{name}\'''')
-            return None
+            raise AttributeError(f'''context variable not found: \'{name}\'''')
 
     __instance = __Config()
+    __set_up = False
 
     def __new__(cls):
-        cls.__setup_log_level()
+        if not Context.__set_up:
+            cls.__setup_log_level()
+            Context.__set_up = True
         return Context.__instance
 
     @staticmethod
     def __setup_log_level():
-        context_level = Context.__instance.log_level
         level = logging.INFO
-        found = False
-        for log_level in _AVAILABLE_LOG_LEVELS:
-            if context_level == logging.getLevelName(log_level):
-                level = log_level
-                found = True
-                break
+        if hasattr(Context.__instance, 'log_level'):
+            context_level = Context.__instance.log_level
+            for log_level in _AVAILABLE_LOG_LEVELS:
+                if context_level == logging.getLevelName(log_level):
+                    level = log_level
+                    break
+
         logging.basicConfig(level=level,
                             format=_LOG_FORMAT,
                             datefmt=_LOG_DATE_FORMAT)
-        if not found:
-            logging.info('Log level invalid or not specified. Defaults to INFO.')
+
+        logging.info(f'Log level set to {logging.getLevelName(level)}')
