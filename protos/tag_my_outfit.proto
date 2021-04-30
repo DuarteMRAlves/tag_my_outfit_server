@@ -6,8 +6,8 @@ syntax = "proto3";
  *                 with predictions for all requests
  */
 service TagMyOutfitService {
-    rpc predict (PredictRequest) returns (PredictResponse) {}
-    rpc stream_predict (stream PredictRequest) returns (StreamPredictResponse) {}
+    rpc predict (PredictRequest) returns (PredictResponse);
+    rpc stream_predict (stream PredictRequest) returns (StreamPredictResponse);
 }
 
 /* Predict Request
